@@ -130,26 +130,26 @@ class SNParametricForecast(Resource):
         forecast_mjd = self.shift_mjd(forecast_mjd, args.days)
         shifted_mjd = forecast_mjd - min_mjd
         features_on_db, parameters = self.get_parameters(args.oid)
-        message = "Forecast done with Villar, et al. 2019. [https://arxiv.org/abs/1905.07422], "
+        message = "Forecast based on modified Villar et al. 2019. analytic model (see [https://arxiv.org/abs/1905.07422] and [https://arxiv.org/abs/2008.03311]). "
         if features_on_db:
-            message += "using precomputed ALeRCE [http://alerce.science] parameters."
+            message += "Using precomputed ALeRCE [http://alerce.science] parameters."
         else:
-            message += "on-demand parameters computed in ALeRCE [http://alerce.science] API. Warning: This forecast was made with few points."
+            message += "On-demand parameters computed in ALeRCE [http://alerce.science] API. Warning: This forecast was made with few points."
 
         forecasts = []
         for fid in [1,2]:
             fid_params = parameters[parameters.fid == fid]
             fid_params.set_index("name", inplace=True)
             fid_params = fid_params.value
-            magap = self.infer(fid_params, shifted_mjd)
+            magpsf = self.infer(fid_params, shifted_mjd)
             forecasts.append({
-                'magap': self.clean_response(magap),
+                'magpsf': self.clean_response(magpsf),
                 'mjd': forecast_mjd,
                 'fid': fid,
             })
 
         return {
                 'oid': args.oid,
-                "forecasts": forecasts,
-                "message": message
+                "forecast": forecasts,
+                "comment": message
             }

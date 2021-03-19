@@ -3,7 +3,7 @@ from flask_restx import Resource, fields, Model
 forecast_model = Model(
     "forecast",
     {
-        "magap": fields.Float(
+        "magpsf": fields.Float(
             description="Forecast Apparent Magnitude"
         ),
         "mjd": fields.Float(
@@ -19,8 +19,8 @@ parametric_response = Model(
     "Parametric Model Response",
     {
         "oid": fields.String(description="Object identifier"),
-        "forecasts": fields.List(fields.Nested(forecast_model)),
-        "message": fields.String(description="Metadata from forecast")
+        "forecast": fields.List(fields.Nested(forecast_model)),
+        "comment": fields.String(description="Metadata from forecast")
 
     }
 
