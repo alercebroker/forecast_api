@@ -48,6 +48,9 @@ def model_inference(times, A, t0, gamma, f, t_rise, t_fall):
 @api.response(404, "Not found")
 @api.response(400, "Bad Request")
 class SNParametricForecast(Resource):
+    """
+        Supernova Parametric Model.
+    """
     client = Alerce()
     extractor = SNParametricModelExtractor()
 
@@ -126,8 +129,10 @@ class SNParametricForecast(Resource):
         args = parametric_parser.parse_args()
         object = self.check_object(args.oid)
         min_mjd = object["firstmjd"]
-        forecast_mjd = self.mjd_now()
-        forecast_mjd = self.shift_mjd(forecast_mjd, args.days)
+        if not args.mjd:
+            forecast_mjd = self.mjd_now()
+        else:
+            forecast_mjd = args.mjd
         shifted_mjd = forecast_mjd - min_mjd
         features_on_db, parameters = self.get_parameters(args.oid)
         message = "Forecast based on modified Villar et al. 2019. analytic model (see [https://arxiv.org/abs/1905.07422] and [https://arxiv.org/abs/2008.03311]). "
