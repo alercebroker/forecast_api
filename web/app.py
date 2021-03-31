@@ -1,3 +1,4 @@
+from werkzeug.middleware.proxy_fix import ProxyFix
 from flask import Flask
 from flask_restx import Resource, Api
 from flask_cors import CORS
@@ -5,6 +6,7 @@ from flask_cors import CORS
 from .modules.parametric import api as parametric_api
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app,x_host=1, x_prefix=1)
 CORS(app)
 
 description = open("description.md")
