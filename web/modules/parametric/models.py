@@ -3,11 +3,15 @@ from flask_restx import Resource, fields, Model
 forecast_model = Model(
     "forecast",
     {
-        "magpsf": fields.Float(
-            description="Forecast Apparent Magnitude"
+        "magpsf": fields.List(
+            fields.Float(
+                description="Forecast Apparent Magnitude"
+            )
         ),
-        "mjd": fields.Float(
-            description="MJD associated to forecast"
+        "mjd": fields.List(
+            fields.Float(
+                description="MJD associated to forecast"
+            )
         ),
         "fid": fields.Integer(
             description="Filter ID (1=g; 2=r; 3=i)"

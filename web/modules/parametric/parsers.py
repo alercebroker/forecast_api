@@ -10,4 +10,5 @@ parametric_parser.add_argument('oid',
                                help='ZTF Object ID')
 parametric_parser.add_argument('mjd',
                                type=float,
+                               action='append',
                                help='Modified julian date to next forecast')

@@ -78,11 +78,14 @@ class SNParametricForecast(Resource):
         params = self.extractor.compute_features(detections)
         return params
 
-    def clean_response(self, value):
-        if np.isnan(value):
-            return None
-        else:
-            return value
+    def clean_response(self, values):
+        new_values = []
+        for value in values:
+            if np.isnan(value):
+                new_values.append(value)
+            else:
+                new_values.append(value)
+        return new_values
 
     def get_parameters(self, oid):
         try:
@@ -130,9 +133,9 @@ class SNParametricForecast(Resource):
         object = self.check_object(args.oid)
         min_mjd = object["firstmjd"]
         if not args.mjd:
-            forecast_mjd = self.mjd_now()
+            forecast_mjd = np.array([self.mjd_now()])
         else:
-            forecast_mjd = args.mjd
+            forecast_mjd = np.array(args.mjd)
         shifted_mjd = forecast_mjd - min_mjd
         features_on_db, parameters = self.get_parameters(args.oid)
         message = "Forecast based on modified Villar et al. 2019. analytic model (see [https://arxiv.org/abs/1905.07422] and [https://arxiv.org/abs/2008.03311]). "
