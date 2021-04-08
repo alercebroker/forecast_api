@@ -11,8 +11,8 @@ CORS(app)
 
 description = open("description.md")
 api = Api(app,
-        version = "1.0",
-        title = "ALeRCE Supernova Forecast API",
+        version = "1.0.1",
+        title = "ALeRCE Forecast API",
         description = description.read())
 api.add_namespace(parametric_api, path="/parametric")
 

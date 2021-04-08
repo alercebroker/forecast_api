@@ -20,5 +20,5 @@ Selecting the route shows the different fields available. By default it uses the
 
 The interface can be used to test the request and generate a **curl** request example to use it with bash.
 ```
-curl -X GET "http://localhost:5000/parametric/sn?oid=ZTF20aaelulu" -H "accept: application/json"
+curl -X GET "http://api.alerce.online/forecast/v1/parametric/sn?oid=ZTF20aaelulu" -H "accept: application/json"
 ```
