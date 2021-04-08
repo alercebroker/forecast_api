@@ -138,6 +138,7 @@ class SNParametricForecast(Resource):
             forecast_mjd = np.array(args.mjd)
         shifted_mjd = forecast_mjd - min_mjd
         features_on_db, parameters = self.get_parameters(args.oid)
+        print(features_on_db,parameters)
         message = "Forecast based on modified Villar et al. 2019. analytic model (see [https://arxiv.org/abs/1905.07422] and [https://arxiv.org/abs/2008.03311]). "
         if features_on_db:
             message += "Using precomputed ALeRCE [http://alerce.science] parameters."
@@ -145,7 +146,7 @@ class SNParametricForecast(Resource):
             message += "On-demand parameters computed in ALeRCE [http://alerce.science] API. Warning: This forecast was made with few points."
 
         forecasts = []
-        for fid in [1,2]:
+        for fid in parameters.fid.unique():
             fid_params = parameters[parameters.fid == fid]
             fid_params.set_index("name", inplace=True)
             fid_params = fid_params.value
