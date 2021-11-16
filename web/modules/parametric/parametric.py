@@ -54,7 +54,7 @@ class SNParametricForecast(Resource):
         Supernova Parametric Model.
     """
     client = Alerce()
-    extractor = SNParametricModelExtractor()
+    extractor = SNParametricModelExtractor(bands=[1, 2])
 
     def check_object(self, oid):
         try:
