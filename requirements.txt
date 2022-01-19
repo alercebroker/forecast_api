@@ -4,6 +4,6 @@ numpy
 -e git+https://github.com/alercebroker/P4J.git#egg=P4J
 -e git+https://github.com/alercebroker/turbo-fats.git#egg=turbofats
 -e git+https://github.com/alercebroker/lc_classifier#egg=lc_classifier
--e git+https://github.com/alercebroker/alerce_client_new.git#egg=alerce
+alerce
 flask_restx
 flask_cors
