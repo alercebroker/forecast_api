@@ -1,5 +1,3 @@
-Cython
-numpy
 -e git+https://github.com/alercebroker/mhps.git#egg=mhps
 -e git+https://github.com/alercebroker/P4J.git#egg=P4J
 -e git+https://github.com/alercebroker/turbo-fats.git#egg=turbofats
