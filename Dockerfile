@@ -1,10 +1,10 @@
-FROM python:3.6
+FROM python:3.10
 
 ADD requirements.txt /app/
 WORKDIR /app
 RUN pip install --upgrade pip && pip install gunicorn==19.9.0
-RUN while read p; do pip install --use-deprecated=legacy-resolver $p; done < requirements.txt;
-
+RUN pip install Cython && pip install numpy
+RUN pip install -r requirements.txt
 COPY . /app
 EXPOSE 8080
 
