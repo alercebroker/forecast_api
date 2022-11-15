@@ -16,13 +16,13 @@ api.models[parametric_response.name] = parametric_response
 api.models[forecast_model.name] = forecast_model
 
 MODEL_PARAMS = [
-    'SPM_t0',
-    'SPM_chi',
-    'SPM_gamma',
-    'SPM_beta',
-    'SPM_A',
-    'SPM_tau_rise',
-    'SPM_tau_fall'
+    "SPM_t0",
+    "SPM_chi",
+    "SPM_gamma",
+    "SPM_beta",
+    "SPM_A",
+    "SPM_tau_rise",
+    "SPM_tau_fall",
 ]
 
 
@@ -38,21 +38,21 @@ def model_inference(times, A, t0, gamma, f, t_rise, t_fall):
 
     sigmoid = 1.0 / (1.0 + np.exp(-beta * (times - t1)))
     den = 1 + np.exp(-(times - t0) / t_rise)
-    flux = (A * (1 - f) * np.exp(-(times - t1) / t_fall) / den
-            * sigmoid
-            + A * (1. - f * (times - t0) / gamma) / den
-            * (1 - sigmoid))
+    flux = A * (1 - f) * np.exp(-(times - t1) / t_fall) / den * sigmoid + A * (
+        1.0 - f * (times - t0) / gamma
+    ) / den * (1 - sigmoid)
     return flux
 
 
-@api.route('/sn')
+@api.route("/sn")
 @api.response(200, "Success")
 @api.response(404, "Not found")
 @api.response(400, "Bad Request")
 class SNParametricForecast(Resource):
     """
-        Supernova Parametric Model.
+    Supernova Parametric Model.
     """
+
     client = Alerce()
     extractor = SNParametricModelExtractor(bands=[1, 2])
 
@@ -62,7 +62,9 @@ class SNParametricForecast(Resource):
             object = object.iloc[0]
             return object
         except ObjectNotFoundError:
-            return abort(404, 'Not Found', errors='Object ID not found in ALeRCE database')
+            return abort(
+                404, "Not Found", errors="Object ID not found in ALeRCE database"
+            )
 
     def mjd_now(self):
         now_datetime = datetime.datetime.utcnow()
@@ -116,14 +118,14 @@ class SNParametricForecast(Resource):
 
     def infer(self, params, mjd):
         flux_forecast = model_inference(
-                mjd,
-                params.SPM_A,
-                params.SPM_t0,
-                params.SPM_gamma,
-                params.SPM_beta,
-                params.SPM_tau_rise,
-                params.SPM_tau_fall
-            )
+            mjd,
+            params.SPM_A,
+            params.SPM_t0,
+            params.SPM_gamma,
+            params.SPM_beta,
+            params.SPM_tau_rise,
+            params.SPM_tau_fall,
+        )
         magnitude_forecast = flux_to_mag(flux_forecast)
         return magnitude_forecast
 
@@ -144,7 +146,9 @@ class SNParametricForecast(Resource):
         if features_on_db:
             message += "Using precomputed ALeRCE [http://alerce.science] parameters."
         else:
-            message += "On-demand parameters computed in ALeRCE [http://alerce.science] API."
+            message += (
+                "On-demand parameters computed in ALeRCE [http://alerce.science] API."
+            )
             message += " Warning: This forecast was made with few points."
 
         forecasts = []
@@ -153,14 +157,12 @@ class SNParametricForecast(Resource):
             fid_params.set_index("name", inplace=True)
             fid_params = fid_params.value
             magpsf = self.infer(fid_params, shifted_mjd)
-            forecasts.append({
-                'magpsf': self.clean_response(magpsf),
-                'mjd': forecast_mjd,
-                'fid': fid,
-            })
+            forecasts.append(
+                {
+                    "magpsf": self.clean_response(magpsf),
+                    "mjd": forecast_mjd,
+                    "fid": fid,
+                }
+            )
 
-        return {
-                'oid': args.oid,
-                "forecast": forecasts,
-                "comment": message
-            }
+        return {"oid": args.oid, "forecast": forecasts, "comment": message}
