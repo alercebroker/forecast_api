@@ -32,11 +32,11 @@ def test_already_on_db(tester, mocker):
     params = {"oid": "ZTF21aaqfrxz"}
 
     mocker.patch(
-        "web.modules.parametric.parametric.SNParametricForecast.check_object",
+        "src.domain.domain_methods.check_object",
         return_value={"firstmjd": 58000},
     )
     mocker.patch(
-        "web.modules.parametric.parametric.SNParametricForecast.get_parameters",
+        "src.domain.domain_methods.get_parameters",
         return_value=(
             True,
             pd.DataFrame(
@@ -61,11 +61,11 @@ def test_fit_parameters(tester, mocker):
     params = {"oid": "ZTF21aaqfrxz"}
 
     mocker.patch(
-        "web.modules.parametric.parametric.SNParametricForecast.check_object",
+        "src.domain.domain_methods.check_object",
         return_value={"firstmjd": 58000},
     )
     mocker.patch(
-        "web.modules.parametric.parametric.SNParametricForecast.get_parameters",
+        "src.domain.domain_methods.get_parameters",
         return_value=(
             False,
             pd.DataFrame(
