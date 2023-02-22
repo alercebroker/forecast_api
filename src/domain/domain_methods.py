@@ -83,3 +83,15 @@ def infer(params, mjd):
     )
     magnitude_forecast = model.flux_to_mag(flux_forecast)
     return magnitude_forecast
+
+
+def get_features_message(features_on_db: bool):
+    message = "Forecast based on modified Villar et al. 2019. analytic model"
+    message += " (see [https://arxiv.org/abs/1905.07422] and [https://arxiv.org/abs/2008.03311]). "
+    if features_on_db:
+        message += "Using precomputed ALeRCE [http://alerce.science] parameters."
+    else:
+        message += (
+            "On-demand parameters computed in ALeRCE [http://alerce.science] API."
+        )
+        message += " Warning: This forecast was made with few points."
