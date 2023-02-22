@@ -14,7 +14,7 @@ extractor = SNParametricModelExtractor(bands=[1, 2])
 
 def controller_parametric_response(parametric_parser):
     args = parametric_parser.parse_args()
-    object = check_object(args.oid)
+    object = check_object(args.oid, client)
     min_mjd = object["firstmjd"]
     if not args.mjd:
         forecast_mjd = np.array([mjd_now()])
@@ -22,6 +22,6 @@ def controller_parametric_response(parametric_parser):
         forecast_mjd = np.array(args.mjd)
     shifted_mjd = forecast_mjd - min_mjd
 
-    parametric_response = get(args.oid, forecast_mjd, shifted_mjd)
+    parametric_response = get(args.oid, forecast_mjd, shifted_mjd, client, extractor)
 
     return parse_to_json(parametric_response)

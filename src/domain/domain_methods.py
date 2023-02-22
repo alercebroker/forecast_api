@@ -5,11 +5,6 @@ from flask_restx import abort
 from src.domain.SN_model import SNModel, MODEL_PARAMS
 
 
-# Esto deberia instanciarse en el controlador
-# client = Alerce()
-# extractor = SNParametricModelExtractor(bands=[1, 2])
-
-
 def check_object(oid, client):
     try:
         object = client.query_object(oid, format="pandas")
@@ -50,14 +45,14 @@ def params_to_dataframe(params, fids):
     return params
 
 
-def get_parameters(oid, client):
+def get_parameters(oid, client, extractor):
     features = client.query_features(oid, format="pandas")
     if len(features) > 0:
         params = features[features.name.isin(MODEL_PARAMS)]
         return True, params
     else:
         # Fitting model and getting params
-        params = fit_parameters(oid).iloc[0]
+        params = fit_parameters(oid, client, extractor).iloc[0]
 
         # Renaming index and getting fid
         fids = rename_and_get_fit(params)
