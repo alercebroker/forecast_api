@@ -1,0 +1,1 @@
+from src.adapters.controller import controller_parametric_response
