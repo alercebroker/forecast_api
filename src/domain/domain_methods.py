@@ -64,7 +64,6 @@ def get_parameters(oid, client, extractor):
 
 
 def infer(params, mjd):
-
     model = SNModel()
 
     flux_forecast = model.model_inference(

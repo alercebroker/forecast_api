@@ -2,7 +2,6 @@ from src.domain.domain_methods import get_parameters, get_features_message, infe
 
 
 def get(oid, forecast_mjd, shifted_mjd, client, extractor):
-
     features_on_db, parameters = get_parameters(oid, client, extractor)
     message = get_features_message(features_on_db)
 
