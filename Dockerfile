@@ -1,8 +1,8 @@
-FROM python:3.10
+FROM python:3.10.6
 
 ADD requirements.txt /app/
 WORKDIR /app
-RUN pip install --upgrade pip && pip install gunicorn==19.9.0
+RUN pip install --upgrade pip && pip install gunicorn==20.1.0
 RUN pip install Cython numpy
 RUN pip install -r requirements.txt
 COPY . /app
