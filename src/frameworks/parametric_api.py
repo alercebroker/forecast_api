@@ -15,5 +15,5 @@ api.models[forecast_model.name] = forecast_model
 class SNParametricForecast(Resource):
     @api.marshal_with(parametric_response)
     @api.expect(parametric_parser)
-    def get():
+    def get(self):
         return controller_parametric_response(parametric_parser)
