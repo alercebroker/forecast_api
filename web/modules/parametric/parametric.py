@@ -71,25 +71,12 @@ class SNParametricForecast(Resource):
         astro_time = Time(now_datetime)
         return astro_time.mjd
 
-    def shift_mjd(self, mjd, days=0):
-        mjd += days
-        return mjd
-
     def fit_parameters(self, oid):
         detections = self.client.query_detections(oid, format="pandas")
         detections["oid"] = oid
         detections.set_index("oid", inplace=True)
         params = self.extractor.compute_features(detections)
         return params
-
-    def clean_response(self, values):
-        new_values = []
-        for value in values:
-            if np.isnan(value):
-                new_values.append(value)
-            else:
-                new_values.append(value)
-        return new_values
 
     def get_parameters(self, oid):
         try:
@@ -159,7 +146,7 @@ class SNParametricForecast(Resource):
             magpsf = self.infer(fid_params, shifted_mjd)
             forecasts.append(
                 {
-                    "magpsf": self.clean_response(magpsf),
+                    "magpsf": magpsf,
                     "mjd": forecast_mjd,
                     "fid": fid,
                 }
