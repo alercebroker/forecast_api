@@ -9,4 +9,4 @@ COPY . /app
 EXPOSE 8080
 
 
-CMD ["gunicorn", "-t", "4", "--bind", "0.0.0.0", "web.app:app"]
+CMD ["gunicorn", "-t", "4", "--bind", "0.0.0.0", "src.frameworks.flask:app"]
