@@ -12,8 +12,8 @@ api.models[forecast_model.name] = forecast_model
 @api.response(200, "Success")
 @api.response(404, "Not found")
 @api.response(400, "Bad Request")
-@api.marshal_with(parametric_response)
-@api.expect(parametric_parser)
 class SNParametricForecast(Resource):
+    @api.marshal_with(parametric_response)
+    @api.expect(parametric_parser)
     def get(self):
         return controller_parametric_response(parametric_parser)
