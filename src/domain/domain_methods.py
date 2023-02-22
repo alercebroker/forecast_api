@@ -3,7 +3,7 @@ import datetime
 from alerce.core import Alerce
 from alerce.exceptions import ObjectNotFoundError
 from flask_restx import abort
-from src.domain.SN_model import SNModel
+from src.domain.SN_model import SNModel, MODEL_PARAMS
 
 
 # Esto deberia instanciarse en el controlador
@@ -35,13 +35,11 @@ def fit_parameters(oid, client, extractor):
 
 
 def get_parameters(oid, client):
-    try:
-        features = client.query_features(oid, format="pandas")
-        if len(features) == 0:
-            raise Exception("Features not found, fitting model")
-            params = features[features.name.isin(MODEL_PARAMS)]
+    features = client.query_features(oid, format="pandas")
+    if len(features) > 0:
+        params = features[features.name.isin(MODEL_PARAMS)]
         return True, params
-    except Exception:
+    else:
         # Fitting model and getting params
         params = fit_parameters(oid).iloc[0]
 
