@@ -66,7 +66,7 @@ def get_parameters(oid, client, extractor):
 def infer(params, mjd):
     model = SNModel()
     print("#" * 10)
-    print(f"los params son:{params}")
+    print(f"los params son:\n{params}")
     print("#" * 10)
 
     flux_forecast = model.model_inference(

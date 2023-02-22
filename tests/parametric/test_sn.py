@@ -32,11 +32,11 @@ def test_already_on_db(tester, mocker):
     params = {"oid": "ZTF21aaqfrxz"}
 
     mocker.patch(
-        "src.domain.domain_methods.check_object",
+        "src.adapters.controller.check_object",
         return_value={"firstmjd": 58000},
     )
     mocker.patch(
-        "src.domain.domain_methods.get_parameters",
+        "src.use_cases.get_parametric_response.get_parameters",
         return_value=(
             True,
             pd.DataFrame(
@@ -61,11 +61,11 @@ def test_fit_parameters(tester, mocker):
     params = {"oid": "ZTF21aaqfrxz"}
 
     mocker.patch(
-        "src.domain.domain_methods.check_object",
+        "src.adapters.controller.check_object",
         return_value={"firstmjd": 58000},
     )
     mocker.patch(
-        "src.domain.domain_methods.get_parameters",
+        "src.use_cases.get_parametric_response.get_parameters",
         return_value=(
             False,
             pd.DataFrame(

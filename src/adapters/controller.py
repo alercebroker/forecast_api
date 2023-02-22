@@ -11,8 +11,6 @@ from alerce.core import Alerce
 client = Alerce()
 extractor = SNParametricModelExtractor(bands=[1, 2])
 
-# comentario
-
 
 def controller_parametric_response(parametric_parser):
     args = parametric_parser.parse_args()
