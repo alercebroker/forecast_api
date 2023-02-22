@@ -1,5 +1,5 @@
 import pytest
-from web.app import app
+from src.frameworks.flask import app
 
 import pandas as pd
 from alerce.exceptions import ObjectNotFoundError
