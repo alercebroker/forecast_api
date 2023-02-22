@@ -2,7 +2,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from flask import Flask
 from flask_restx import Api
 from flask_cors import CORS
-from src.frameworks.parametric_api import parametric_api
+from src.frameworks.parametric_api import api as parametric_api
 
 
 app = Flask(__name__)
