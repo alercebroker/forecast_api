@@ -14,11 +14,11 @@ MODEL_PARAMS = [
 
 
 class SNModel:
-    def flux_to_mag(flux):
+    def flux_to_mag(self, flux):
         return 16.4 - 2.5 * np.log10(flux)
 
     @jit(nopython=True)
-    def model_inference(times, A, t0, gamma, f, t_rise, t_fall):
+    def model_inference(self, times, A, t0, gamma, f, t_rise, t_fall):
         # f in this function is SPM_beta
         beta = 1.0 / 3.0
         t1 = t0 + gamma
