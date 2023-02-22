@@ -4,5 +4,3 @@ tests/tests.out
 *.pyc
 .vscode/
 .coverage
-htmlcov/
-src
