@@ -1,5 +1,5 @@
 import pytest
-from web.app import app
+from src.frameworks.flask import app
 
 import pandas as pd
 from alerce.exceptions import ObjectNotFoundError
@@ -32,11 +32,11 @@ def test_already_on_db(tester, mocker):
     params = {"oid": "ZTF21aaqfrxz"}
 
     mocker.patch(
-        "web.modules.parametric.parametric.SNParametricForecast.check_object",
+        "src.adapters.controller.check_object",
         return_value={"firstmjd": 58000},
     )
     mocker.patch(
-        "web.modules.parametric.parametric.SNParametricForecast.get_parameters",
+        "src.use_cases.get_parametric_response.get_parameters",
         return_value=(
             True,
             pd.DataFrame(
@@ -51,7 +51,6 @@ def test_already_on_db(tester, mocker):
             ),
         ),
     )
-
     response = tester.get(forecast_route, content_type="html/text", query_string=params)
     assert response.status_code == 200
     assert "precomputed" in response.data.decode("utf-8").lower()
@@ -61,11 +60,11 @@ def test_fit_parameters(tester, mocker):
     params = {"oid": "ZTF21aaqfrxz"}
 
     mocker.patch(
-        "web.modules.parametric.parametric.SNParametricForecast.check_object",
+        "src.adapters.controller.check_object",
         return_value={"firstmjd": 58000},
     )
     mocker.patch(
-        "web.modules.parametric.parametric.SNParametricForecast.get_parameters",
+        "src.use_cases.get_parametric_response.get_parameters",
         return_value=(
             False,
             pd.DataFrame(
@@ -80,6 +79,7 @@ def test_fit_parameters(tester, mocker):
             ),
         ),
     )
+
     response = tester.get(forecast_route, content_type="html/text", query_string=params)
     assert response.status_code == 200
     assert "demand" in response.data.decode("utf-8").lower()
