@@ -13,26 +13,32 @@ MODEL_PARAMS = [
 ]
 
 
-class SNModel:
-    def flux_to_mag(self, flux):
-        return 16.4 - 2.5 * np.log10(flux)
+def flux_to_mag(flux):
+    return 16.4 - 2.5 * np.log10(flux)
 
-    @jit(nopython=True)
-    def model_inference(self, times, A, t0, gamma, f, t_rise, t_fall):
-        # f in this function is SPM_beta
-        beta = 1.0 / 3.0
-        t1 = t0 + gamma
 
-        sigmoid = 1.0 / (1.0 + np.exp(-beta * (times - t1)))
-        den = 1 + np.exp(-(times - t0) / t_rise)
-        flux = A * (1 - f) * np.exp(-(times - t1) / t_fall) / den * sigmoid + A * (
-            1.0 - f * (times - t0) / gamma
-        ) / den * (1 - sigmoid)
-        return flux
+@jit(nopython=True)
+def model_inference(times, A, t0, gamma, f, t_rise, t_fall):
+    # f in this function is SPM_beta
+    beta = 1.0 / 3.0
+    t1 = t0 + gamma
 
-    # Specify the type of the `self` parameter
-    @classmethod
-    def model_inference_jit(
-        cls, self: types.Omitted, times, A, t0, gamma, f, t_rise, t_fall
-    ):
-        return cls().model_inference(times, A, t0, gamma, f, t_rise, t_fall)
+    sigmoid = 1.0 / (1.0 + np.exp(-beta * (times - t1)))
+    den = 1 + np.exp(-(times - t0) / t_rise)
+    flux = A * (1 - f) * np.exp(-(times - t1) / t_fall) / den * sigmoid + A * (
+        1.0 - f * (times - t0) / gamma
+    ) / den * (1 - sigmoid)
+
+    print("E" * 10)
+    print(beta)
+    print("E" * 10)
+    print(t1)
+    print("E" * 10)
+    print(sigmoid)
+    print("E" * 10)
+    print(den)
+    print("E" * 10)
+    print(flux)
+    print("E" * 10)
+    print("\n")
+    return flux

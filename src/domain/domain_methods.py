@@ -2,21 +2,39 @@ from astropy.time import Time
 import datetime
 from alerce.exceptions import ObjectNotFoundError
 from flask_restx import abort
-from src.domain.SN_model import SNModel, MODEL_PARAMS
+from src.domain.SN_model import flux_to_mag, model_inference, MODEL_PARAMS
 
 
 def check_object(oid, client):
+    print("#" * 10)
+    print(client)
+    print("#" * 10)
+
     try:
+        print("check object try")
         object = client.query_object(oid, format="pandas")
+        print("#" * 10)
+        print(object)
+        print("#" * 10)
         object = object.iloc[0]
+        print("#" * 10)
+        print(object)
+        print("#" * 10)
+
         return object
     except ObjectNotFoundError:
+        print("#" * 10)
+        print("check object except")
+        print("#" * 10)
         return abort(404, "Not Found", errors="Object ID not found in ALeRCE database")
 
 
 def mjd_now():
     now_datetime = datetime.datetime.utcnow()
     astro_time = Time(now_datetime)
+    print("#" * 10)
+    print(astro_time)
+    print("#" * 10)
     return astro_time.mjd
 
 
@@ -64,15 +82,12 @@ def get_parameters(oid, client, extractor):
 
 
 def infer(params, mjd):
-    model = SNModel()
-    print("#" * 10)
-    print(f"el mjd es:\n{mjd}")
-    print("#" * 10)
-    print("#" * 10)
-    print(f"los params son:\n{params}")
-    print("#" * 10)
-
-    flux_forecast = model.model_inference_jit(
+    print("$" * 10)
+    print(params)
+    print("$" * 10)
+    print(mjd)
+    print("$" * 10)
+    flux_forecast = model_inference(
         mjd,
         params.SPM_A,
         params.SPM_t0,
@@ -81,7 +96,11 @@ def infer(params, mjd):
         params.SPM_tau_rise,
         params.SPM_tau_fall,
     )
-    magnitude_forecast = model.flux_to_mag(flux_forecast)
+
+    print(flux_forecast)
+
+    magnitude_forecast = flux_to_mag(flux_forecast)
+    print(magnitude_forecast)
     return magnitude_forecast
 
 
@@ -95,3 +114,4 @@ def get_features_message(features_on_db: bool):
             "On-demand parameters computed in ALeRCE [http://alerce.science] API."
         )
         message += " Warning: This forecast was made with few points."
+    return message

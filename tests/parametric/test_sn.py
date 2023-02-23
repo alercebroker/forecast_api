@@ -14,12 +14,14 @@ def tester():
 
 
 def test_index(tester):
+    print("un test bueno\n")
     response = tester.get("/", content_type="html/text")
     assert "swagger" in response.data.decode("utf-8").lower()
     assert response.status_code == 200
 
 
 def test_not_found(tester, mocker):
+    print("segundo test bueno\n")
     params = {"oid": "not_in_db"}
 
     mocker.patch("alerce.core.Alerce.query_object", side_effect=ObjectNotFoundError())
@@ -52,7 +54,9 @@ def test_already_on_db(tester, mocker):
         ),
     )
 
+    print("tercer tests problemas\n")
     response = tester.get(forecast_route, content_type="html/text", query_string=params)
+    print(response.status_code)
     assert response.status_code == 200
     assert "precomputed" in response.data.decode("utf-8").lower()
 
@@ -80,6 +84,8 @@ def test_fit_parameters(tester, mocker):
             ),
         ),
     )
+
+    print("cuarto test problemas\n")
     response = tester.get(forecast_route, content_type="html/text", query_string=params)
     assert response.status_code == 200
     assert "demand" in response.data.decode("utf-8").lower()

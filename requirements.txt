@@ -5,3 +5,4 @@
 alerce
 flask_restx
 flask_cors
+pytest-mock

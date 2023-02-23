@@ -3,9 +3,6 @@ from src.domain.domain_methods import get_parameters, get_features_message, infe
 
 def get(oid, forecast_mjd, shifted_mjd, client, extractor):
     features_on_db, parameters = get_parameters(oid, client, extractor)
-    print("#" * 10)
-    print(f"los parametros son:\n{parameters}")
-    print("#" * 10)
     message = get_features_message(features_on_db)
 
     forecasts = []
@@ -13,7 +10,19 @@ def get(oid, forecast_mjd, shifted_mjd, client, extractor):
         fid_params = parameters[parameters.fid == fid]
         fid_params.set_index("name", inplace=True)
         fid_params = fid_params.value
+        print("=" * 10)
+        print(fid_params)
+        print("=" * 10)
+        print(shifted_mjd)
+        print("=" * 10)
+        print("\n")
         magpsf = infer(fid_params, shifted_mjd)
+        print("R" * 10)
+        print(magpsf)
+        print("R" * 10)
+        print(type(magpsf))
+        print("R" * 10)
+        print("\n")
         forecasts.append(
             {
                 "magpsf": magpsf,
