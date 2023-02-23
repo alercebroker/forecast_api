@@ -1,4 +1,4 @@
-from numba import jit
+from numba import jit, types
 import numpy as np
 
 
@@ -29,3 +29,10 @@ class SNModel:
             1.0 - f * (times - t0) / gamma
         ) / den * (1 - sigmoid)
         return flux
+
+    # Specify the type of the `self` parameter
+    @classmethod
+    def model_inference_jit(
+        cls, self: types.Omitted, times, A, t0, gamma, f, t_rise, t_fall
+    ):
+        return cls().model_inference(times, A, t0, gamma, f, t_rise, t_fall)
