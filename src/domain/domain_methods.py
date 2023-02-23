@@ -72,7 +72,7 @@ def infer(params, mjd):
     print(f"los params son:\n{params}")
     print("#" * 10)
 
-    flux_forecast = model.model_inference(
+    flux_forecast = model.model_inference_jit(
         mjd,
         params.SPM_A,
         params.SPM_t0,
