@@ -1,6 +1,5 @@
 from src.use_cases.get_parametric_response import get
 from src.domain.domain_methods import check_object, mjd_now
-from src.adapters.presenter import parse_to_json
 import numpy as np
 
 from lc_classifier.features.extractors import SNParametricModelExtractor
