@@ -6,35 +6,17 @@ from src.domain.SN_model import flux_to_mag, model_inference, MODEL_PARAMS
 
 
 def check_object(oid, client):
-    print("#" * 10)
-    print(client)
-    print("#" * 10)
-
     try:
-        print("check object try")
         object = client.query_object(oid, format="pandas")
-        print("#" * 10)
-        print(object)
-        print("#" * 10)
         object = object.iloc[0]
-        print("#" * 10)
-        print(object)
-        print("#" * 10)
-
         return object
     except ObjectNotFoundError:
-        print("#" * 10)
-        print("check object except")
-        print("#" * 10)
         return abort(404, "Not Found", errors="Object ID not found in ALeRCE database")
 
 
 def mjd_now():
     now_datetime = datetime.datetime.utcnow()
     astro_time = Time(now_datetime)
-    print("#" * 10)
-    print(astro_time)
-    print("#" * 10)
     return astro_time.mjd
 
 
@@ -82,11 +64,6 @@ def get_parameters(oid, client, extractor):
 
 
 def infer(params, mjd):
-    print("$" * 10)
-    print(params)
-    print("$" * 10)
-    print(mjd)
-    print("$" * 10)
     flux_forecast = model_inference(
         mjd,
         params.SPM_A,
@@ -97,10 +74,7 @@ def infer(params, mjd):
         params.SPM_tau_fall,
     )
 
-    print(flux_forecast)
-
     magnitude_forecast = flux_to_mag(flux_forecast)
-    print(magnitude_forecast)
     return magnitude_forecast
 
 

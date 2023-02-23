@@ -29,16 +29,4 @@ def model_inference(times, A, t0, gamma, f, t_rise, t_fall):
         1.0 - f * (times - t0) / gamma
     ) / den * (1 - sigmoid)
 
-    print("E" * 10)
-    print(beta)
-    print("E" * 10)
-    print(t1)
-    print("E" * 10)
-    print(sigmoid)
-    print("E" * 10)
-    print(den)
-    print("E" * 10)
-    print(flux)
-    print("E" * 10)
-    print("\n")
     return flux
