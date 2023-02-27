@@ -1,7 +1,8 @@
-from flask_restx import reqparse
+from fastapi import Query
+from pydantic.dataclasses import dataclass
 
-parametric_parser = reqparse.RequestParser()
-parametric_parser.add_argument("oid", type=str, required=True, help="ZTF Object ID")
-parametric_parser.add_argument(
-    "mjd", type=float, action="append", help="Modified julian date to next forecast"
-)
+
+@dataclass
+class SNInput:
+    oid: str = Query(description="ZTF Object ID")
+    mjd: float | None = Query(None, description="Modified julian date to next forecast")
