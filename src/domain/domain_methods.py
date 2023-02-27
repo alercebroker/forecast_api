@@ -1,8 +1,9 @@
 from astropy.time import Time
 import datetime
 from alerce.exceptions import ObjectNotFoundError
-from flask_restx import abort
+from fastapi import HTTPException
 from src.domain.SN_model import flux_to_mag, model_inference, MODEL_PARAMS
+import numpy as np
 
 
 def check_object(oid, client):
@@ -11,7 +12,17 @@ def check_object(oid, client):
         object = object.iloc[0]
         return object
     except ObjectNotFoundError:
-        return abort(404, "Not Found", errors="Object ID not found in ALeRCE database")
+        raise HTTPException(
+            status_code=404, detail="Object ID not found in ALeRCE database"
+        )
+
+
+def validate_magpsf_value(magpsf):
+    if np.isnan(magpsf):
+        return [None]
+    if np.isinf(magpsf):
+        return ["Inf"]
+    return magpsf.tolist()
 
 
 def mjd_now():

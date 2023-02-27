@@ -4,7 +4,7 @@ from typing import List
 
 
 class ForecastModel(BaseModel):
-    magpsf: List[float] = Query(description="Forecast Apparent Magnitude")
+    magpsf: List[float | str | None] = Query(description="Forecast Apparent Magnitude")
     mjd: List[float] = Query(description="MJD associated to forecast")
     fid: int = Query(description="Filter ID (1=g; 2=r; 3=i)")
 

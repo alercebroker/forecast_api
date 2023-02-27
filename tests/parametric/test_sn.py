@@ -1,5 +1,6 @@
 import pytest
-from src.frameworks.flask import app
+from src.frameworks.fastAPI import app
+from fastapi.testclient import TestClient
 
 import pandas as pd
 from alerce.exceptions import ObjectNotFoundError
@@ -9,13 +10,13 @@ forecast_route = "/parametric/sn"
 
 @pytest.fixture
 def tester():
-    with app.test_client() as tester:
+    with TestClient(app) as tester:
         yield tester
 
 
 def test_index(tester):
-    response = tester.get("/", content_type="html/text")
-    assert "swagger" in response.data.decode("utf-8").lower()
+    response = tester.get("/docs")
+    assert "swagger" in response.text.lower()
     assert response.status_code == 200
 
 
@@ -24,7 +25,7 @@ def test_not_found(tester, mocker):
 
     mocker.patch("alerce.core.Alerce.query_object", side_effect=ObjectNotFoundError())
 
-    response = tester.get(forecast_route, content_type="html/text", query_string=params)
+    response = tester.get(forecast_route, params=params)
     assert response.status_code == 404
 
 
@@ -51,9 +52,9 @@ def test_already_on_db(tester, mocker):
             ),
         ),
     )
-    response = tester.get(forecast_route, content_type="html/text", query_string=params)
+    response = tester.get(forecast_route, params=params)
     assert response.status_code == 200
-    assert "precomputed" in response.data.decode("utf-8").lower()
+    assert "precomputed" in response.text.lower()
 
 
 def test_fit_parameters(tester, mocker):
@@ -80,6 +81,6 @@ def test_fit_parameters(tester, mocker):
         ),
     )
 
-    response = tester.get(forecast_route, content_type="html/text", query_string=params)
+    response = tester.get(forecast_route, params=params)
     assert response.status_code == 200
-    assert "demand" in response.data.decode("utf-8").lower()
+    assert "demand" in response.text.lower()

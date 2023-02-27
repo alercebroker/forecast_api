@@ -1,4 +1,9 @@
-from src.domain.domain_methods import get_parameters, get_features_message, infer
+from src.domain.domain_methods import (
+    get_parameters,
+    get_features_message,
+    infer,
+    validate_magpsf_value,
+)
 import numpy as np
 
 
@@ -15,7 +20,7 @@ def get(oid, forecast_mjd, shifted_mjd, client, extractor):
 
         forecasts.append(
             {
-                "magpsf": magpsf.tolist(),
+                "magpsf": validate_magpsf_value(magpsf),
                 "mjd": forecast_mjd.tolist(),
                 "fid": int(fid),
             }
