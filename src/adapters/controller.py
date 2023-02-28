@@ -11,7 +11,6 @@ extractor = SNParametricModelExtractor(bands=[1, 2])
 
 
 def controller_parametric_response(params):
-
     object = check_object(params.oid, client)
     min_mjd = object["firstmjd"]
 
