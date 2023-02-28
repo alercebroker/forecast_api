@@ -21,7 +21,7 @@ def validate_magpsf_value(magpsf):
     if np.isnan(magpsf):
         return [None]
     if np.isinf(magpsf):
-        return ["Inf"]
+        return ["infinity"]
     return magpsf.tolist()
 
 

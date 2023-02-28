@@ -4,5 +4,3 @@
 -e git+https://github.com/alercebroker/lc_classifier#egg=lc_classifier
 alerce
 fastapi == 0.92.0
-pytest-mock
-httpx
